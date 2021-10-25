@@ -1,5 +1,5 @@
 <template>
-  <div class="block" v-if="showBlock">
+  <div class="block" v-if="showBlock" @click="stopTimer">
     click me
   </div>
 </template>
@@ -9,24 +9,29 @@ export default {
   props: ["delay"],
   data() {
     return {
-      showBlock: false
+      showBlock: false,
+      timer: null,
+      reactionTime: 0
     };
   },
   mounted() {
     //  this will fire only when mounted to the DOM
-    console.log("component mounted");
     setTimeout(() => {
-      this.showBlock = true
-      console.log (this.delay)
-    }, this.delay)
+      this.showBlock = true,
+        this.startTimer();
+    }, this.delay);
   },
-  updated() {
-    //  this will fire only when data in component updated
-    console.log('components updated')
-  },
-  unmounted() {
-    //  this will fire only when component unmounted from the Dom, is also good when we are working with vue router
-    console.log('component unmounted')
+  methods: {
+    startTimer() {
+      this.timer = setInterval(() => {
+        this.reactionTime += 10;
+      }, 10);
+
+    },
+    stopTimer() {
+      clearInterval(this.timer);
+      console.log(this.reactionTime);
+    }
   }
 };
 </script>
